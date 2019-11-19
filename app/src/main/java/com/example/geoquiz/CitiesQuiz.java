@@ -16,9 +16,8 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
+import com.example.geoquiz.GeoDB_API_Classes.CitiesResponse;
 import com.example.geoquiz.GeoDB_API_Classes.CountriesResponse;
-
-
 import com.example.geoquiz.GeoDB_API_Classes.Datum;
 import com.example.geoquiz.GeoDB_API_Classes.FlagResponse;
 import com.google.gson.Gson;
@@ -26,7 +25,7 @@ import com.google.gson.Gson;
 import java.util.List;
 import java.util.Random;
 
-public class FlagsQuizActivity extends AppCompatActivity {
+public class CitiesQuiz extends AppCompatActivity {
     ImageView flagImage;
     TextView question;
     RadioGroup options;
@@ -81,7 +80,7 @@ public class FlagsQuizActivity extends AppCompatActivity {
 
     private void refreshQuestions() {
         // Obtain a number between [0 - 197], this will choose our country
-        int offset = random.nextInt(198);
+        final int offset = random.nextInt(198);
         //mod the random number to choose the flag that will be displayed
         final int country = offset%4;
 
@@ -107,19 +106,16 @@ public class FlagsQuizActivity extends AppCompatActivity {
 
                 //get the flag of a random country
                 String countryID = countryData.get(country).getCode();
-                final String flagURL = "http://geodb-free-service.wirefreethought.com/" +
-                        "v1/geo/countries/" + countryID;
+                final String cityURL = "http://geodb-free-service.wirefreethought.com/" +
+                        "v1/geo/cities?countryIds=" + countryID + "&offset="+offset;
                 final RequestQueue requestQueues =  com.android.volley.toolbox.Volley.newRequestQueue(context);
                 Response.Listener<String> responseListenerFlag = new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
                         //turn them into an object that can be accessed using getters and setters
                         Gson gson = new Gson();
-                        FlagResponse flagData = gson.fromJson(response, FlagResponse.class);
-                        //ToDo size the images so that they dont jump around a lot
-                        String imageURL = flagData.getData().getFlagImageUri();
-                        //set the image of the flag
-                        Utils.fetchSvg(context, imageURL, flagImage);
+                        CitiesResponse cityData = gson.fromJson(response, CitiesResponse.class);
+                        question.setText("Which country is this city in: " + cityData.getData().get(0).getName());
                         requestQueues.stop();
                     }
                 };
@@ -130,7 +126,7 @@ public class FlagsQuizActivity extends AppCompatActivity {
                         requestQueues.stop();
                     }
                 };
-                StringRequest stringRequests = new StringRequest(Request.Method.GET, flagURL, responseListenerFlag,
+                StringRequest stringRequests = new StringRequest(Request.Method.GET, cityURL, responseListenerFlag,
                         errorListenerFlag);
                 requestQueues.add(stringRequests);
 
