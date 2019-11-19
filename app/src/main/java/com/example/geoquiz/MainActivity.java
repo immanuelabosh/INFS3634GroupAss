@@ -22,8 +22,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        //set the title of the page on load to Breeds
-        setTitle("Breeds");
+        //set the title of the page on load to GeoQuiz
+        setTitle("GeoQuiz");
 
         // I want there to be a Fragment in the slot from the start
         swapFragment(new FlagQuizFragment());
