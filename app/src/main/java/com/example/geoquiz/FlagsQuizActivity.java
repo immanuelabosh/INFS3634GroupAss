@@ -13,10 +13,22 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.model.GlideUrl;
+import com.bumptech.glide.load.model.LazyHeaders;
+import com.example.geoquiz.GeoDB_API_Classes.CountriesResponse;
+import com.example.geoquiz.GeoDB_API_Classes.CountryDetails;
+import com.example.geoquiz.GeoDB_API_Classes.Datum;
+import com.example.geoquiz.GeoDB_API_Classes.FlagResponse;
 import com.example.geoquiz.QuizClasses.FlagQuestions;
 import com.google.gson.Gson;
 
+import java.util.List;
 import java.util.Random;
 
 public class FlagsQuizActivity extends AppCompatActivity {
@@ -26,8 +38,9 @@ public class FlagsQuizActivity extends AppCompatActivity {
     RadioButton[] answers = new RadioButton[4];
     Button button;
     Random random = new Random();
-    Context context = getApplicationContext();
+    Context context;
     String correctAnswer;
+
     int checkedRB;
 
 
@@ -43,13 +56,17 @@ public class FlagsQuizActivity extends AppCompatActivity {
         flagImage = findViewById(R.id.imageView);
         question = findViewById(R.id.textView);
         options = findViewById(R.id.radiogroup);
+        context = getApplicationContext();
+        button = findViewById(R.id.button);
         button.setOnClickListener(nextButton);
         button.setEnabled(false);
         options.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
-                button.setEnabled(true);
-                checkedRB = checkedId;
+                if (button.isEnabled() == false){
+                    button.setEnabled(true);
+                    checkedRB = checkedId;
+                }
             }
         });
 
@@ -70,44 +87,89 @@ public class FlagsQuizActivity extends AppCompatActivity {
         // Obtain a number between [0 - 197], this will choose our country
         int offset = random.nextInt(198);
         //mod the random number to choose the flag that will be displayed
-        int country = offset%4;
+        final int country = offset%4;
 
+        String url = "http://geodb-free-service.wirefreethought.com/" +
+                "v1/geo/countries?limit=4&offset="+ offset;
+
+        final CountriesResponse[] countries = new CountriesResponse[1];
         //Make request to get 4 countries
-        String response = Volley.makeRequest("http://geodb-free-service.wirefreethought.com/" +
-                "v1/geo/countries?limit=4&offset="+ offset, context);
+        final RequestQueue requestQueue =  com.android.volley.toolbox.Volley.newRequestQueue(context);
+        Response.Listener<String> responseListener = new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                //turn them into an object that can be accessed using getters and setters
+                Gson gson = new Gson();
+                countries[0] = gson.fromJson(response, CountriesResponse.class);
+                List<Datum> countryData = countries[0].getData();
+                //set the correct answer
+                correctAnswer = countryData.get(country).getName();
+                //set the text of the radio buttons
+                for(int i = 0;i < answers.length;i++){
+                    answers[i].setText(countryData.get(i).getName());
+                }
 
-        //turn them into an object that can be accessed using getters and setters
-        Gson gson = new Gson();
-        //Countries[] objectsArray = gson.fromJson(response, Countries[].class);
+                //get the flag of a random country
+                String countryID = countryData.get(country).getCode();
+                final String flagURL = "http://geodb-free-service.wirefreethought.com/" +
+                        "v1/geo/countries/" + countryID;
+                final RequestQueue requestQueues =  com.android.volley.toolbox.Volley.newRequestQueue(context);
+                Response.Listener<String> responseListenerFlag = new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        //turn them into an object that can be accessed using getters and setters
+                        Gson gson = new Gson();
+                        FlagResponse flagData = gson.fromJson(response, FlagResponse.class);
+                        String imageURL = flagData.getData().getFlagImageUri();
+                        //set the image of the flag
+                        Utils.fetchSvg(context, imageURL, flagImage);
+                        requestQueues.stop();
+                    }
+                };
+
+                Response.ErrorListener errorListenerFlag = new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        requestQueues.stop();
+                    }
+                };
+                StringRequest stringRequests = new StringRequest(Request.Method.GET, flagURL, responseListenerFlag,
+                        errorListenerFlag);
+                requestQueues.add(stringRequests);
+
+                requestQueue.stop();
+            }
+        };
+
+        Response.ErrorListener errorListener = new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                requestQueue.stop();
+            }
+        };
+
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url, responseListener,
+                errorListener);
+        requestQueue.add(stringRequest);
 
 
-        //set the correct answer
-        //correctAnswer = Countries[country].getName;
-        //get the flag of a random one
-        //String countryID = Countries[country].getID;
-        String countryID = null;
-        String flagURL = Volley.makeRequest("http://geodb-free-service.wirefreethought.com/" +
-                "v1/geo/countries/"+ countryID, context);
 
-        //set the text of the radio buttons
-        for(int i = 0;i < answers.length;i++){
-            //answers[i].setText(Countries[i].getName);
-        }
 
-        //set the image of the flag
-        Glide.with(context).load(flagURL).into(flagImage);
     }
 
     private void checkAnswer(){
         //check if they're clicking to go to the next question or check their answer
-        if (button.getText().equals("Check")){
+        if (button.getText().equals("Check Answer")){
             //find the radio button that was checked
             RadioButton selectedAnswer = findViewById(checkedRB);
             //check if its the right answer
             if (selectedAnswer.getText() == correctAnswer){
                 //display correct answer popup
+                selectedAnswer.setText("Good job");
             }else {
-                //whoops u made a fucky wucky
+                //display correct answer
+                selectedAnswer.setText("Bad job");
+
             }
             //change the text of the next button
             button.setText("Next");
@@ -118,6 +180,8 @@ public class FlagsQuizActivity extends AppCompatActivity {
             refreshQuestions();
             //change the text of the next button
             button.setText("Check Answer");
+            //uncheck the radio buttons
+            options.clearCheck();
             //disable the button until a radio button is selected
             button.setEnabled(false);
         }

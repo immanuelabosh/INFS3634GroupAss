@@ -24,7 +24,7 @@ public abstract class Volley {
         Response.ErrorListener errorListener = new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                result[0] = null;
+                result[0] = "";
                 requestQueue.stop();
             }
         };
