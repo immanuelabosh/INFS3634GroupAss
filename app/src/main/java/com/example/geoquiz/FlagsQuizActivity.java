@@ -120,6 +120,7 @@ public class FlagsQuizActivity extends AppCompatActivity {
                         //turn them into an object that can be accessed using getters and setters
                         Gson gson = new Gson();
                         FlagResponse flagData = gson.fromJson(response, FlagResponse.class);
+                        //ToDo size the images so that they dont jump around a lot
                         String imageURL = flagData.getData().getFlagImageUri();
                         //set the image of the flag
                         Utils.fetchSvg(context, imageURL, flagImage);
@@ -163,6 +164,7 @@ public class FlagsQuizActivity extends AppCompatActivity {
             //find the radio button that was checked
             RadioButton selectedAnswer = findViewById(checkedRB);
             //check if its the right answer
+            //TODO Add a proper congratulations/chatisement for the user
             if (selectedAnswer.getText() == correctAnswer){
                 //display correct answer popup
                 selectedAnswer.setText("Good job");
