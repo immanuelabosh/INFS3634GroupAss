@@ -10,10 +10,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
 
-import com.example.geoquiz.CitiesQuiz;
-import com.example.geoquiz.FlagsQuizActivity;
+import com.example.geoquiz.CitiesQuizActivity;
 import com.example.geoquiz.R;
 
 public class CityQuizFragment extends Fragment {
@@ -41,7 +39,7 @@ public class CityQuizFragment extends Fragment {
         startQuiz.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getContext(), CitiesQuiz.class);
+                Intent intent = new Intent(getContext(), CitiesQuizActivity.class);
                 startActivity(intent);
             }
         });

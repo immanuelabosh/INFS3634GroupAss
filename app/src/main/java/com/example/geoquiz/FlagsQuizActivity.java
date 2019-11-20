@@ -36,8 +36,6 @@ public class FlagsQuizActivity extends AppCompatActivity {
     Context context;
     String correctAnswer;
 
-    int checkedRB;
-
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -86,6 +84,9 @@ public class FlagsQuizActivity extends AppCompatActivity {
 
         String url = "http://geodb-free-service.wirefreethought.com/" +
                 "v1/geo/countries?limit=4&offset="+ offset;
+
+        //set the imageView to the downloading image to let the user know the image is downloading
+        flagImage.setImageResource(R.drawable.ic_cloud_download_black_24dp);
 
         final CountriesResponse[] countries = new CountriesResponse[1];
         //Make request to get 4 countries

@@ -25,7 +25,7 @@ import com.google.gson.Gson;
 import java.util.List;
 import java.util.Random;
 
-public class CitiesQuiz extends AppCompatActivity {
+public class CitiesQuizActivity extends AppCompatActivity {
     ImageView flagImage;
     TextView question;
     RadioGroup options;
@@ -35,7 +35,6 @@ public class CitiesQuiz extends AppCompatActivity {
     Context context;
     String correctAnswer;
 
-    int checkedRB;
 
 
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,7 +59,6 @@ public class CitiesQuiz extends AppCompatActivity {
             public void onCheckedChanged(RadioGroup group, int checkedId) {
                 if (button.isEnabled() == false){
                     button.setEnabled(true);
-                    checkedRB = checkedId;
                 }
             }
         });
@@ -83,6 +81,10 @@ public class CitiesQuiz extends AppCompatActivity {
         final int offset = random.nextInt(198);
         //mod the random number to choose the flag that will be displayed
         final int country = offset%4;
+
+        //let the user know the question is loading
+        question.setText("Loading Question...");
+
 
         String url = "http://geodb-free-service.wirefreethought.com/" +
                 "v1/geo/countries?limit=4&offset="+ offset;
@@ -154,7 +156,7 @@ public class CitiesQuiz extends AppCompatActivity {
         //check if they're clicking to go to the next question or check their answer
         if (button.getText().equals("Check Answer")){
             //find the radio button that was checked
-            RadioButton selectedAnswer = findViewById(checkedRB);
+            RadioButton selectedAnswer = findViewById(options.getCheckedRadioButtonId());
             //check if its the right answer
             //TODO Add a proper congratulations/chatisement for the user
             if (selectedAnswer.getText() == correctAnswer){
