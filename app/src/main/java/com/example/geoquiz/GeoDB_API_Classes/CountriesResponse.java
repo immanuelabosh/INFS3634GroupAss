@@ -9,7 +9,7 @@ public class CountriesResponse {
 
     @SerializedName("data")
     @Expose
-    private List<Datum> data = null;
+    private List<Country> data = null;
     @SerializedName("links")
     @Expose
     private List<Link> links = null;
@@ -17,11 +17,11 @@ public class CountriesResponse {
     @Expose
     private Metadata metadata;
 
-    public List<Datum> getData() {
+    public List<Country> getData() {
         return data;
     }
 
-    public void setData(List<Datum> data) {
+    public void setData(List<Country> data) {
         this.data = data;
     }
 

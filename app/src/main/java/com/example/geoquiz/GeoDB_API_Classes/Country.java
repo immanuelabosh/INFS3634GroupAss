@@ -1,15 +1,24 @@
 package com.example.geoquiz.GeoDB_API_Classes;
 
+import androidx.annotation.NonNull;
+import androidx.room.Entity;
+import androidx.room.Ignore;
+import androidx.room.PrimaryKey;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
-public class Datum {
+@Entity
+public class Country {
 
+    @PrimaryKey
+    @NonNull
     @SerializedName("code")
     @Expose
     private String code;
+    @Ignore
     @SerializedName("currencyCodes")
     @Expose
     private List<String> currencyCodes = null;

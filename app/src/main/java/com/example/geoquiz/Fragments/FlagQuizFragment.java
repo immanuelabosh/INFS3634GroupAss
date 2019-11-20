@@ -11,7 +11,7 @@ import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
 
-import com.example.geoquiz.FlagsQuizActivity;
+import com.example.geoquiz.Activities.FlagsQuizActivity;
 import com.example.geoquiz.R;
 
 public class FlagQuizFragment extends Fragment {

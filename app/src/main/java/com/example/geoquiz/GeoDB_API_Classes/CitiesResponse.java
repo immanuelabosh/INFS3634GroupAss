@@ -2,7 +2,6 @@ package com.example.geoquiz.GeoDB_API_Classes;
 
 import java.util.List;
 
-import com.example.geoquiz.GeoDB_API_Classes.Datum;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 

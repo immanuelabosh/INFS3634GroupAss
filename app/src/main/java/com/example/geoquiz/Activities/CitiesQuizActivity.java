@@ -1,4 +1,4 @@
-package com.example.geoquiz;
+package com.example.geoquiz.Activities;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -18,8 +18,8 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.example.geoquiz.GeoDB_API_Classes.CitiesResponse;
 import com.example.geoquiz.GeoDB_API_Classes.CountriesResponse;
-import com.example.geoquiz.GeoDB_API_Classes.Datum;
-import com.example.geoquiz.GeoDB_API_Classes.FlagResponse;
+import com.example.geoquiz.GeoDB_API_Classes.Country;
+import com.example.geoquiz.R;
 import com.google.gson.Gson;
 
 import java.util.List;
@@ -47,7 +47,7 @@ public class CitiesQuizActivity extends AppCompatActivity {
         answers[2] = findViewById(R.id.radioButton3);
         answers[3] = findViewById(R.id.radioButton4);
         flagImage = findViewById(R.id.imageView);
-        question = findViewById(R.id.textView);
+        question = findViewById(R.id.quizQuestion);
         options = findViewById(R.id.radiogroup);
         context = getApplicationContext();
         button = findViewById(R.id.button);
@@ -98,7 +98,7 @@ public class CitiesQuizActivity extends AppCompatActivity {
                 //turn them into an object that can be accessed using getters and setters
                 Gson gson = new Gson();
                 countries[0] = gson.fromJson(response, CountriesResponse.class);
-                List<Datum> countryData = countries[0].getData();
+                List<Country> countryData = countries[0].getData();
                 //set the correct answer
                 correctAnswer = countryData.get(country).getName();
                 //set the text of the radio buttons

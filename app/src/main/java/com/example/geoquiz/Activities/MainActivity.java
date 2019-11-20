@@ -1,4 +1,4 @@
-package com.example.geoquiz;
+package com.example.geoquiz.Activities;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -8,10 +8,14 @@ import androidx.fragment.app.FragmentTransaction;
 
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.widget.TextView;
 
+import com.example.geoquiz.AsyncTasks.InsertCountriesAsyncTask;
+import com.example.geoquiz.Database.AppDatabase;
 import com.example.geoquiz.Fragments.CityQuizFragment;
 import com.example.geoquiz.Fragments.FlagQuizFragment;
 import com.example.geoquiz.Fragments.LearningFragment;
+import com.example.geoquiz.R;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class MainActivity extends AppCompatActivity {
@@ -25,6 +29,12 @@ public class MainActivity extends AppCompatActivity {
 
         //set the title of the page on load to GeoQuiz
         setTitle("GeoQuiz");
+
+        //fill the database with countries
+        InsertCountriesAsyncTask insertCountriesAsyncTask = new InsertCountriesAsyncTask();
+        insertCountriesAsyncTask.setContext(getApplicationContext());
+        insertCountriesAsyncTask.execute();
+
 
         // I want there to be a Fragment in the slot from the start
         swapFragment(new FlagQuizFragment());
@@ -57,6 +67,8 @@ public class MainActivity extends AppCompatActivity {
                 return false;
             }
         });
+
+
     }
 
     /**
@@ -70,6 +82,7 @@ public class MainActivity extends AppCompatActivity {
         fragmentTransaction.replace(R.id.fragment_slot, fragment);
         fragmentTransaction.commit();
     }
+
 
 
 }
