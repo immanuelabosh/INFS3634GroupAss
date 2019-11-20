@@ -9,6 +9,7 @@ import androidx.fragment.app.FragmentTransaction;
 import android.os.Bundle;
 import android.view.MenuItem;
 
+import com.example.geoquiz.Fragments.CityQuizFragment;
 import com.example.geoquiz.Fragments.FlagQuizFragment;
 import com.example.geoquiz.Fragments.LearningFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -45,6 +46,11 @@ public class MainActivity extends AppCompatActivity {
                 } else if (menuItem.getItemId() == R.id.nav_learning) {
                     Fragment fragment = new LearningFragment();
                     setTitle("Learning");
+                    swapFragment(fragment);
+                    return true;
+                } else if (menuItem.getItemId() == R.id.nav_city_quiz) {
+                    Fragment fragment = new CityQuizFragment();
+                    setTitle("Cities");
                     swapFragment(fragment);
                     return true;
                 }

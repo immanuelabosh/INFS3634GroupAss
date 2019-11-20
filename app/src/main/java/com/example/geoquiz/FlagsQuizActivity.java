@@ -61,7 +61,6 @@ public class FlagsQuizActivity extends AppCompatActivity {
             public void onCheckedChanged(RadioGroup group, int checkedId) {
                 if (button.isEnabled() == false){
                     button.setEnabled(true);
-                    checkedRB = checkedId;
                 }
             }
         });
@@ -158,7 +157,7 @@ public class FlagsQuizActivity extends AppCompatActivity {
         //check if they're clicking to go to the next question or check their answer
         if (button.getText().equals("Check Answer")){
             //find the radio button that was checked
-            RadioButton selectedAnswer = findViewById(checkedRB);
+            RadioButton selectedAnswer = findViewById(options.getCheckedRadioButtonId());
             //check if its the right answer
             //TODO Add a proper congratulations/chatisement for the user
             if (selectedAnswer.getText() == correctAnswer){
