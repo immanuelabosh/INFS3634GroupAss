@@ -191,15 +191,18 @@ public class FlagsQuizActivity extends AppCompatActivity {
             if (selectedAnswer.getText() == correctAnswer){
                 //display correct answer popup
                 selectedAnswer.setText("Good job");
+                selectedAnswer.setTextColor(Color.parseColor("#00ff00"));
             }else {
                 //display correct answer
                 selectedAnswer.setText("Bad job");
+                selectedAnswer.setTextColor(Color.parseColor("#ff1919"));
             }
             //change the text of the next button
             button.setText("Next");
 
         //if they want to go to the next question
         }else {
+            RadioButton selectedAnswer = findViewById(options.getCheckedRadioButtonId());
             //change the question
             refreshQuestions();
             //change the text of the next button
@@ -208,10 +211,11 @@ public class FlagsQuizActivity extends AppCompatActivity {
             options.clearCheck();
             //disable the button until a radio button is selected
             button.setEnabled(false);
-            answers[0].setBackgroundColor(Color.LTGRAY);
-            answers[1].setBackgroundColor(Color.LTGRAY);
-            answers[2].setBackgroundColor(Color.LTGRAY);
-            answers[3].setBackgroundColor(Color.LTGRAY);
+            answers[0].setBackground(getDrawable(R.drawable.unshaded_background));
+            answers[1].setBackground(getDrawable(R.drawable.unshaded_background));
+            answers[2].setBackground(getDrawable(R.drawable.unshaded_background));
+            answers[3].setBackground(getDrawable(R.drawable.unshaded_background));
+            selectedAnswer.setTextColor(Color.parseColor("#000058"));
         }
     }
 }

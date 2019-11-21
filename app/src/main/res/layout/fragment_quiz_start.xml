@@ -9,7 +9,10 @@
         android:id="@+id/quizTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="TextView" />
+        android:gravity="center"
+        android:text="TextView"
+        android:textSize="40sp"
+        app:fontFamily="@font/annie_use_your_telescope" />
 
     <ImageView
         android:id="@+id/quizStartImage"
@@ -22,5 +25,8 @@
         android:id="@+id/startQuizButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Button" />
+        android:background="@drawable/backgroundcoloured"
+        android:text="Button"
+        android:textColor="#090000"
+        android:textColorHint="#006B1212" />
 </LinearLayout>
