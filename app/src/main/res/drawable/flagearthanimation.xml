@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<animation-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:drawable="@drawable/globe1"
+        android:duration="100"/>
+    <item
+        android:drawable="@drawable/globe2"
+        android:duration="100"/>
+    <item
+        android:drawable="@drawable/globe3"
+        android:duration="100"/>
+    <item
+        android:drawable="@drawable/globe4"
+        android:duration="100"/>
+    <item
+        android:drawable="@drawable/globe5"
+        android:duration="100"/>
+    <item
+        android:drawable="@drawable/globe6"
+        android:duration="100"/>
+    <item
+        android:drawable="@drawable/globe7"
+        android:duration="100"/>
+    <item
+        android:drawable="@drawable/globe8"
+        android:duration="100"/>
+    <item
+        android:drawable="@drawable/globe9"
+        android:duration="100"/>
+    <item
+        android:drawable="@drawable/globe10"
+        android:duration="100"/>
+    <item
+        android:drawable="@drawable/globe11"
+        android:duration="100"/>
+    <item
+        android:drawable="@drawable/globe12"
+        android:duration="100"/>
+    <item
+        android:drawable="@drawable/globe13"
+        android:duration="100"/>
+    <item
+        android:drawable="@drawable/globe14"
+        android:duration="100"/>
+    <item
+        android:drawable="@drawable/globe15"
+        android:duration="100"/>
+    <item
+        android:drawable="@drawable/globe16"
+        android:duration="100"/>
+    <item
+        android:drawable="@drawable/globe17"
+        android:duration="100"/>
+
+
+</animation-list>
