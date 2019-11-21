@@ -1,6 +1,7 @@
 package com.example.geoquiz.Activities;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -59,6 +60,30 @@ public class FlagsQuizActivity extends AppCompatActivity {
         options.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
+                if(answers[0].isChecked()){
+                    answers[0].setBackground(getDrawable(R.drawable.shaded_background));
+                    answers[1].setBackground(getDrawable(R.drawable.unshaded_background));
+                    answers[2].setBackground(getDrawable(R.drawable.unshaded_background));
+                    answers[3].setBackground(getDrawable(R.drawable.unshaded_background));
+                }
+                if(answers[1].isChecked()){
+                    answers[0].setBackground(getDrawable(R.drawable.unshaded_background));
+                    answers[1].setBackground(getDrawable(R.drawable.shaded_background));
+                    answers[2].setBackground(getDrawable(R.drawable.unshaded_background));
+                    answers[3].setBackground(getDrawable(R.drawable.unshaded_background));
+                }
+                if(answers[2].isChecked()) {
+                    answers[0].setBackground(getDrawable(R.drawable.unshaded_background));
+                    answers[1].setBackground(getDrawable(R.drawable.unshaded_background));
+                    answers[2].setBackground(getDrawable(R.drawable.shaded_background));
+                    answers[3].setBackground(getDrawable(R.drawable.unshaded_background));
+                }
+                if(answers[3].isChecked()) {
+                    answers[0].setBackground(getDrawable(R.drawable.unshaded_background));
+                    answers[1].setBackground(getDrawable(R.drawable.unshaded_background));
+                    answers[2].setBackground(getDrawable(R.drawable.unshaded_background));
+                    answers[3].setBackground(getDrawable(R.drawable.shaded_background));
+                }
                 if (button.isEnabled() == false){
                     button.setEnabled(true);
                 }
@@ -169,7 +194,6 @@ public class FlagsQuizActivity extends AppCompatActivity {
             }else {
                 //display correct answer
                 selectedAnswer.setText("Bad job");
-
             }
             //change the text of the next button
             button.setText("Next");
@@ -184,6 +208,10 @@ public class FlagsQuizActivity extends AppCompatActivity {
             options.clearCheck();
             //disable the button until a radio button is selected
             button.setEnabled(false);
+            answers[0].setBackgroundColor(Color.LTGRAY);
+            answers[1].setBackgroundColor(Color.LTGRAY);
+            answers[2].setBackgroundColor(Color.LTGRAY);
+            answers[3].setBackgroundColor(Color.LTGRAY);
         }
     }
 }

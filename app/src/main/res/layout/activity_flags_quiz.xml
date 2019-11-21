@@ -8,7 +8,7 @@
     <ImageView
         android:id="@+id/imageView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="300dp"
         android:adjustViewBounds="true"
         tools:srcCompat="@tools:sample/backgrounds/scenic[0]" />
 
@@ -25,35 +25,58 @@
         <RadioButton
             android:id="@+id/radioButton"
             android:layout_width="match_parent"
-            android:layout_height="100dp"
+            android:layout_height="70dp"
             android:text="RadioButton"
-            android:textSize="30dp"
+            android:textSize="20dp"
             android:textStyle="bold"
-            android:background="@drawable/background"/>
+            android:button="@null"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_margin="10dp"
+            android:background="@drawable/unshaded_background"
+            android:gravity="center"/>
 
         <RadioButton
             android:id="@+id/radioButton2"
             android:layout_width="match_parent"
-            android:layout_height="100dp"
+            android:layout_height="70dp"
             android:text="RadioButton"
-            android:textSize="30dp"
-            android:textStyle="bold"/>
+            android:textSize="20dp"
+            android:textStyle="bold"
+            android:button="@null"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_margin="10dp"
+            android:background="@drawable/unshaded_background"
+            android:gravity="center"/>
 
         <RadioButton
             android:id="@+id/radioButton3"
             android:layout_width="match_parent"
-            android:layout_height="100dp"
+            android:layout_height="70dp"
             android:text="RadioButton"
-            android:textSize="30dp"
-            android:textStyle="bold"/>
+            android:textSize="20dp"
+            android:textStyle="bold"
+            android:button="@null"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_margin="10dp"
+            android:background="@drawable/unshaded_background"
+            android:gravity="center"/>
 
         <RadioButton
             android:id="@+id/radioButton4"
             android:layout_width="match_parent"
-            android:layout_height="100dp"
+            android:layout_height="70dp"
             android:text="RadioButton"
-            android:textSize="30dp"
-            android:textStyle="bold"/>
+            android:textSize="20dp"
+            android:textStyle="bold"
+            android:button="@null"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_margin="10dp"
+            android:background="@drawable/unshaded_background"
+            android:gravity="center"/>
     </RadioGroup>
 
     <Button
