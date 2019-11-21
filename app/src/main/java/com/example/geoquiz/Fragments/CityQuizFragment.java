@@ -1,6 +1,7 @@
 package com.example.geoquiz.Fragments;
 
 import android.content.Intent;
+import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,6 +20,8 @@ public class CityQuizFragment extends Fragment {
     ImageView image;
     TextView title;
     Button startQuiz;
+    ImageView cityImage;
+    AnimationDrawable globe;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -28,10 +31,17 @@ public class CityQuizFragment extends Fragment {
         image = view.findViewById(R.id.quizStartImage);
         title = view.findViewById(R.id.quizTitle);
         startQuiz = view.findViewById(R.id.startQuizButton);
+        cityImage = view.findViewById(R.id.quizStartImage);
+        cityImage.setBackgroundResource(R.drawable.earthanimation);
+        globe = (AnimationDrawable) cityImage.getBackground();
 
         //set all the texts
         title.setText("City Quiz");
         startQuiz.setText("Start Quiz");
+
+        globe.start();
+
+
         //TODO add image to quiz fragments
         //add flag image here
         // image.setImageResource();
