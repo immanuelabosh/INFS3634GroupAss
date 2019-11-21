@@ -6,7 +6,7 @@ import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
 
-import com.example.geoquiz.GeoDB_API_Classes.Country;
+import com.example.geoquiz.Models.Country;
 
 /**
  *  Refer to: https://developer.android.com/training/data-storage/room/index.html

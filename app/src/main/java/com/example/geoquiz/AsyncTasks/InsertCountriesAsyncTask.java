@@ -10,13 +10,12 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.example.geoquiz.Database.AppDatabase;
-import com.example.geoquiz.GeoDB_API_Classes.CitiesResponse;
-import com.example.geoquiz.GeoDB_API_Classes.CountriesResponse;
-import com.example.geoquiz.GeoDB_API_Classes.Country;
-import com.example.geoquiz.GeoDB_API_Classes.Link;
+import com.example.geoquiz.Models.CountriesResponse;
+import com.example.geoquiz.Models.Country;
+import com.example.geoquiz.Models.Link;
+import com.example.geoquiz.Utils;
 import com.google.gson.Gson;
 
-import java.util.ArrayList;
 import java.util.List;
 
 
@@ -27,6 +26,7 @@ public class InsertCountriesAsyncTask extends AsyncTask<Void, Void, Void> {
     // queries. If your Room database class is named something else, change this.
     private AppDatabase db;
     private Context context;
+    private String downloadKey = "countriesDownloaded";
 
     public void setContext(Context context){
         this.context = context;
@@ -34,10 +34,13 @@ public class InsertCountriesAsyncTask extends AsyncTask<Void, Void, Void> {
 
     @Override
     protected Void doInBackground(Void... voids) {
-
-        this.db = AppDatabase.getInstance(context);
-        makeRequest("/v1/geo/countries?limit=10");
-
+        //if countries are downloaded, do nothing
+        if (Utils.getPrefs(downloadKey, context).equalsIgnoreCase("true")){
+            //if countries arent downloaded, download them
+        }else {
+            this.db = AppDatabase.getInstance(context);
+            makeRequest("/v1/geo/countries?limit=10");
+        }
         return null;
     }
 
@@ -57,8 +60,7 @@ public class InsertCountriesAsyncTask extends AsyncTask<Void, Void, Void> {
                 Toast toast = Toast.makeText(context, "Countries Downloaded: " + db.countryDao().getSize(), Toast.LENGTH_SHORT);
                 toast.show();
                 if (db.countryDao().getSize() == countriesResponse.getMetadata().getTotalCount()){
-                    Toast toastSuccess = Toast.makeText(context, "All countries downloaded", Toast.LENGTH_SHORT);
-                    toastSuccess.show();
+                    Utils.editPrefs(downloadKey, "true", context);
                 }else {
                     List<Country> countryData = countriesResponse.getData();
                     db.countryDao().insert(countryData);

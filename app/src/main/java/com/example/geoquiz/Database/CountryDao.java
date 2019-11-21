@@ -5,7 +5,7 @@ import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
 
-import com.example.geoquiz.GeoDB_API_Classes.Country;
+import com.example.geoquiz.Models.Country;
 
 import java.util.List;
 

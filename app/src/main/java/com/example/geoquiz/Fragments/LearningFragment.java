@@ -3,14 +3,10 @@ package com.example.geoquiz.Fragments;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
-import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
-import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -18,7 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.geoquiz.CountryAdapter;
 import com.example.geoquiz.Database.AppDatabase;
-import com.example.geoquiz.GeoDB_API_Classes.Country;
+import com.example.geoquiz.Models.Country;
 import com.example.geoquiz.R;
 
 import java.util.ArrayList;
