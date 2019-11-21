@@ -1,15 +1,15 @@
-package com.example.geoquiz.GeoDB_API_Classes;
+package com.example.geoquiz.Models;
 
 import java.util.List;
-
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class CitiesResponse {
+
+public class CountriesResponse {
 
     @SerializedName("data")
     @Expose
-    private List<Cities> data = null;
+    private List<Country> data = null;
     @SerializedName("links")
     @Expose
     private List<Link> links = null;
@@ -17,11 +17,11 @@ public class CitiesResponse {
     @Expose
     private Metadata metadata;
 
-    public List<Cities> getData() {
+    public List<Country> getData() {
         return data;
     }
 
-    public void setData(List<Cities> data) {
+    public void setData(List<Country> data) {
         this.data = data;
     }
 
@@ -42,3 +42,4 @@ public class CitiesResponse {
     }
 
 }
+

@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.geoquiz.Activities.WebViewActivity;
 import com.example.geoquiz.Models.Country;
+import com.example.geoquiz.Models.Leaderboard;
 
 import java.util.List;
 
@@ -19,22 +20,22 @@ import java.util.List;
 
 // We need to give a type in angle brackets <> when we extend RecyclerView.Adapter
 // It's saying that we want an adapter that adapts to CountryViewHolder (our custom ViewHolder)
-public class CountryAdapter extends RecyclerView.Adapter<CountryAdapter.CountryViewHolder> {
+public class LeaderboardAdapter extends RecyclerView.Adapter<LeaderboardAdapter.LeaderboardViewHolder> {
     // class variable that holds the data that we want to adapt
-    private List<Country> countriesToAdapt;
+    private List<Leaderboard.Scores> scoresToAdapt;
 
 
-    public CountryAdapter() {
+    public LeaderboardAdapter() {
     }
 
-    public void setData(List<Country> countriesToAdapt) {
+    public void setData(List<Leaderboard.Scores> scoresToAdapt) {
         // This is basically a Setter that we use to give data to the adapter
-        this.countriesToAdapt = countriesToAdapt;
+        this.scoresToAdapt = scoresToAdapt;
     }
 
     @NonNull
     @Override
-    public CountryViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public LeaderboardViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         // First create a View from the layout file. It'll probably be a ViewGroup like
         // ConstraintLayout that contains more Views inside it.
         // This view now represents your entire one item.
@@ -44,53 +45,36 @@ public class CountryAdapter extends RecyclerView.Adapter<CountryAdapter.CountryV
 
         // Then create an instance of your custom ViewHolder with the View you got from inflating
         // the layout.
-        CountryViewHolder countryViewHolder = new CountryViewHolder(view);
-        return countryViewHolder;
+        return new LeaderboardViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull final CountryViewHolder holder, final int position) {
-        final Country countryAtPosition = countriesToAdapt.get(position);
+    public void onBindViewHolder(@NonNull final LeaderboardViewHolder holder, final int position) {
+        final Leaderboard.Scores scoreAtPosition = scoresToAdapt.get(position);
 
-        //show the countries name
-        holder.countryName.setText(countryAtPosition.getName());
-
-        //when they click on a country item, open the web view activity
-        holder.view.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Context context = view.getContext();
-                Intent intent = new Intent(context, WebViewActivity.class);
-                intent.putExtra("wikiID", countryAtPosition.getWikiDataId());
-                context.startActivity(intent);
-            }
-        });
-
-        // maybe add a share country function
+        //show the score
+        String scoreItem = scoreAtPosition.getUsername() + ": " + scoreAtPosition.getScore();
+        holder.score.setText(scoreItem);
 
     }
 
     @Override
     public int getItemCount() {
-        return countriesToAdapt.size();
+        return scoresToAdapt.size();
     }
 
-    public void filterList (List<Country> filteredList){
-        countriesToAdapt = filteredList;
-        notifyDataSetChanged();
-    }
 
     // ViewHolder represents one item, but doesn't have data when it's first constructed.
     // We assign the data in onBindViewHolder.
-    public static class CountryViewHolder extends RecyclerView.ViewHolder {
+    public static class LeaderboardViewHolder extends RecyclerView.ViewHolder {
         public View view;
-        public TextView countryName;
+        public TextView score;
 
         // This constructor is used in onCreateViewHolder
-        public CountryViewHolder(View v) {
+        public LeaderboardViewHolder(View v) {
             super(v);  // runs the constructor for the ViewHolder superclass
             view = v;
-            countryName = v.findViewById(R.id.countryName);
+            score = v.findViewById(R.id.countryName);
         }
     }
 

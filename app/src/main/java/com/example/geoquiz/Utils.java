@@ -1,6 +1,8 @@
 package com.example.geoquiz;
 
 import android.content.Context;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.widget.ImageView;
 
 import com.pixplicity.sharp.Sharp;
@@ -41,4 +43,18 @@ public class Utils {
             }
         });
     }
+
+//I was gonna use shared preferences to hold a username and the leaderboard
+    public static void editPrefs(String key, String value, Context context) {
+        SharedPreferences sharedPreferences = context.getSharedPreferences(key, Context.MODE_PRIVATE);;
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString(key, value);
+        editor.apply();
+    }
+
+    public static String getPrefs(String key, Context context) {
+        SharedPreferences sharedPreferences = context.getSharedPreferences(key, Context.MODE_PRIVATE);;
+        return sharedPreferences.getString(key, "");
+    }
+
 }

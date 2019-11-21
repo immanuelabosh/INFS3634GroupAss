@@ -1,9 +1,7 @@
-package com.example.geoquiz.GeoDB_API_Classes;
+package com.example.geoquiz.Models;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
-
-import java.util.List;
 
 public class WikiDataResponse {
 

@@ -17,11 +17,11 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
-import com.example.geoquiz.GeoDB_API_Classes.CountriesResponse;
+import com.example.geoquiz.Models.CountriesResponse;
 
 
-import com.example.geoquiz.GeoDB_API_Classes.Country;
-import com.example.geoquiz.GeoDB_API_Classes.FlagResponse;
+import com.example.geoquiz.Models.Country;
+import com.example.geoquiz.Models.FlagResponse;
 import com.example.geoquiz.R;
 import com.example.geoquiz.Utils;
 import com.google.gson.Gson;
