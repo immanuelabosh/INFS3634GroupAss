@@ -48,6 +48,7 @@ public class CitiesQuizActivity extends AppCompatActivity {
         answers[2] = findViewById(R.id.radioButton3);
         answers[3] = findViewById(R.id.radioButton4);
         flagImage = findViewById(R.id.imageView);
+        flagImage.setVisibility(View.GONE);
         question = findViewById(R.id.quizQuestion);
         options = findViewById(R.id.radiogroup);
         context = getApplicationContext();
@@ -187,9 +188,11 @@ public class CitiesQuizActivity extends AppCompatActivity {
             if (selectedAnswer.getText() == correctAnswer){
                 //display correct answer popup
                 selectedAnswer.setText("Good job");
+                selectedAnswer.setTextColor(Color.parseColor("#00c400"));
             }else {
                 //display correct answer
                 selectedAnswer.setText("Bad job");
+                selectedAnswer.setTextColor(Color.parseColor("#ff6666"));
 
             }
             //change the text of the next button

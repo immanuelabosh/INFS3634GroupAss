@@ -28,5 +28,7 @@
         android:background="@drawable/backgroundcoloured"
         android:text="Button"
         android:textColor="#090000"
-        android:textColorHint="#006B1212" />
+        android:textColorHint="#006B1212"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"/>
 </LinearLayout>

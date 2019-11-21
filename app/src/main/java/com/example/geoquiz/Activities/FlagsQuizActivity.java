@@ -56,6 +56,7 @@ public class FlagsQuizActivity extends AppCompatActivity {
         button = findViewById(R.id.button);
         button.setOnClickListener(nextButton);
         button.setEnabled(false);
+        question.setVisibility(View.GONE);
         button.setText("Check Answer");
         options.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
@@ -191,11 +192,11 @@ public class FlagsQuizActivity extends AppCompatActivity {
             if (selectedAnswer.getText() == correctAnswer){
                 //display correct answer popup
                 selectedAnswer.setText("Good job");
-                selectedAnswer.setTextColor(Color.parseColor("#00ff00"));
+                selectedAnswer.setTextColor(Color.parseColor("#00c400"));
             }else {
                 //display correct answer
                 selectedAnswer.setText("Bad job");
-                selectedAnswer.setTextColor(Color.parseColor("#ff1919"));
+                selectedAnswer.setTextColor(Color.parseColor("#ff6666"));
             }
             //change the text of the next button
             button.setText("Next");

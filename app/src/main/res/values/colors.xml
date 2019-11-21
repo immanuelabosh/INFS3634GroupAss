@@ -7,5 +7,7 @@
     <color name ="colorDkGrey">#676767</color>
     <color name="colorGrey">#7E7477</color>
     <color name ="colorDarkBlue">#000058</color>
+    <color name ="colorPastelBlue">#ccccff</color>
+    <color name ="colorPastelGreen">#b1ffb1</color>
 </resources>
 

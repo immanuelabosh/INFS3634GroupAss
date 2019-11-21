@@ -15,7 +15,13 @@
     <TextView
         android:id="@+id/quizQuestion"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/roboto_bold"
+        android:textSize="30dp"
+        android:textStyle="bold"
+        android:gravity="center"
+        android:layout_margin="20dp"
+        android:layout_marginTop="20dp"/>
 
     <RadioGroup
         android:id="@+id/radiogroup"
@@ -85,7 +91,11 @@
 
     <Button
         android:id="@+id/button"
-        android:layout_width="match_parent"
+        android:layout_width="150dp"
         android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:background="@drawable/answer_background"
         android:text="Button" />
 </LinearLayout>

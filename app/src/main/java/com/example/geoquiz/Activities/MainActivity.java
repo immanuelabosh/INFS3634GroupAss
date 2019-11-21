@@ -51,16 +51,16 @@ public class MainActivity extends AppCompatActivity {
                     //Todo transistions for fragments
                     Fragment fragment = new FlagQuizFragment();
                     swapFragment(fragment);
-                    setTitle("Flags");
+                    setTitle("Flags Quiz");
                     return true;
                 } else if (menuItem.getItemId() == R.id.nav_learning) {
                     Fragment fragment = new LearningFragment();
-                    setTitle("Learning");
+                    setTitle("Learn about the countries here!");
                     swapFragment(fragment);
                     return true;
                 } else if (menuItem.getItemId() == R.id.nav_city_quiz) {
                     Fragment fragment = new CityQuizFragment();
-                    setTitle("Cities");
+                    setTitle("Cities Quiz");
                     swapFragment(fragment);
                     return true;
                 }
