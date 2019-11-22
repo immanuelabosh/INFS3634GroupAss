@@ -13,6 +13,7 @@ import android.widget.TextView;
 import com.example.geoquiz.AsyncTasks.InsertCountriesAsyncTask;
 import com.example.geoquiz.Database.AppDatabase;
 import com.example.geoquiz.Fragments.LearningFragment;
+import com.example.geoquiz.Fragments.ProfileFragment;
 import com.example.geoquiz.Fragments.QuizFragment;
 import com.example.geoquiz.R;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -52,14 +53,18 @@ public class MainActivity extends AppCompatActivity {
                     setTitle("Flags Quiz");
                     return true;
                 } else if (menuItem.getItemId() == R.id.nav_learning) {
-                    Fragment fragment = new LearningFragment();
                     setTitle("Learn about the countries here!");
-                    swapFragment(fragment);
+                    swapFragment(new LearningFragment());
                     return true;
                 } else if (menuItem.getItemId() == R.id.nav_city_quiz) {
                     swapFragment(launchQuiz(getString(R.string.cities_quiz)));
                     return true;
+                }else if (menuItem.getItemId() == R.id.nav_profile) {
+                    setTitle("Profile");
+                    swapFragment(new ProfileFragment());
+                    return true;
                 }
+
                 return false;
             }
         });

@@ -5,13 +5,18 @@
         android:icon="@android:drawable/star_off"
         android:title="Flag Quiz" />
     <item
+        android:id="@+id/nav_city_quiz"
+        android:icon="@android:drawable/ic_dialog_map"
+        android:title="City Quiz" />
+    <item
         android:id="@+id/nav_learning"
         android:icon="@android:drawable/ic_menu_sort_alphabetically"
         android:title="Learning Mode" />
     <item
-        android:id="@+id/nav_city_quiz"
-        android:icon="@android:drawable/ic_dialog_map"
-        android:title="City Quiz" />
+        android:id="@+id/nav_profile"
+        android:icon="@drawable/ic_person_black_24dp"
+        android:title="Profile" />
+
 
 
 </menu>

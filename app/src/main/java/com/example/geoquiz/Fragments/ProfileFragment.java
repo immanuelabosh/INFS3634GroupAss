@@ -35,11 +35,12 @@ public class ProfileFragment extends Fragment implements EditTextFragment.EditTe
 
         String json = Utils.getPrefs("leaderboard", getContext());
         String userID = Utils.getPrefs("username", getContext());
-        String userScore = Utils.getPrefs("score", getContext());
+        String userScore = Utils.getScore(getContext());
 
         username.setText(userID);
-        score.setText(userScore);
+        score.setText("You've answered " + userScore + " questions correctly!");
 
+/*
         Gson gson = new Gson();
         Leaderboard board = gson.fromJson(json, Leaderboard.class);
         List<Leaderboard.Scores> scoreboard = board.getScores();
@@ -47,6 +48,7 @@ public class ProfileFragment extends Fragment implements EditTextFragment.EditTe
         LeaderboardAdapter adapter = new LeaderboardAdapter();
         adapter.setData(scoreboard);
         leaderboard.setAdapter(adapter);
+*/
 
         return view;
     }
