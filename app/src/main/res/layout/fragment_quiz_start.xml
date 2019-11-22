@@ -2,23 +2,40 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#78E9A5"
+    >
 
     <TextView
         android:id="@+id/quizTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="#50CEC2"
         android:gravity="center"
         android:text="TextView"
+        android:textColor="#FFFFFF"
         android:textSize="40sp"
-        app:fontFamily="@font/annie_use_your_telescope" />
+        app:fontFamily="@font/acme" />
+
+    <TextView
+        android:id="@+id/quizDescrip"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="TextView"
+        android:gravity="center"
+        android:layout_margin="16dp"
+        android:textSize="20sp"
+        android:textColor="#0A0909"
+        app:fontFamily="@font/acme"
+        />
 
     <ImageView
         android:id="@+id/quizStartImage"
-        android:layout_width="300dp"
+        android:layout_width="wrap_content"
+        android:layout_height="250dp"
         android:layout_gravity="center_horizontal"
-        android:layout_height="300dp"
         android:adjustViewBounds="true"
         tools:srcCompat="@tools:sample/backgrounds/scenic" />
 
@@ -26,11 +43,14 @@
         android:id="@+id/startQuizButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_margin="10dp"
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
-        android:layout_margin="10dp"
-        android:background="@color/colorPastelBlue"
+        android:background="@color/colorBackground"
+        android:fontFamily="@font/bree_serif"
         android:text="Button"
-        android:textColor="#090000"
-        android:textColorHint="#006B1212" />
+        android:textColor="#FDFDFD"
+        android:textColorHint="#006B1212"
+        android:textSize="18sp" />
+
 </LinearLayout>

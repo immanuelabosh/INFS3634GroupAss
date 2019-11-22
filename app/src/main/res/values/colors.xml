@@ -9,5 +9,7 @@
     <color name ="colorDarkBlue">#000058</color>
     <color name ="colorPastelBlue">#ccccff</color>
     <color name ="colorPastelGreen">#b1ffb1</color>
+    <color name ="colorBackground">#50CEC2</color>
+
 </resources>
 

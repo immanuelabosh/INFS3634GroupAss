@@ -19,6 +19,7 @@ public class CityQuizFragment extends Fragment {
 
     ImageView image;
     TextView title;
+    TextView descrip;
     Button startQuiz;
     ImageView cityImage;
     AnimationDrawable globe;
@@ -30,13 +31,15 @@ public class CityQuizFragment extends Fragment {
         //init all the fields
         image = view.findViewById(R.id.quizStartImage);
         title = view.findViewById(R.id.quizTitle);
+        descrip = view.findViewById(R.id.quizDescrip);
         startQuiz = view.findViewById(R.id.startQuizButton);
         cityImage = view.findViewById(R.id.quizStartImage);
-        cityImage.setBackgroundResource(R.drawable.earthanimation);
+        cityImage.setBackgroundResource(R.drawable.citiesanimation);
         globe = (AnimationDrawable) cityImage.getBackground();
 
         //set all the texts
         title.setText("City Quiz");
+        descrip.setText("Match these cities with the right countries!");
         startQuiz.setText("Start Quiz");
 
         globe.start();

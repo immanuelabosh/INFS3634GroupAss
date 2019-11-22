@@ -51,6 +51,16 @@
     <item
         android:drawable="@drawable/globe17"
         android:duration="100"/>
+    <item
+        android:drawable="@drawable/globe18"
+        android:duration="100"/>
+    <item
+        android:drawable="@drawable/globe19"
+        android:duration="100"/>
+    <item
+        android:drawable="@drawable/globe20"
+        android:duration="100"/>
+
 
 
 </animation-list>

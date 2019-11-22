@@ -21,6 +21,7 @@ public class FlagQuizFragment extends Fragment {
     TextView title;
     Button startQuiz;
     ImageView flagImage;
+    TextView descrip;
     AnimationDrawable flagglobe;
 
     @Override
@@ -31,13 +32,15 @@ public class FlagQuizFragment extends Fragment {
         //init all the fields
         image = view.findViewById(R.id.quizStartImage);
         title = view.findViewById(R.id.quizTitle);
+        descrip = view.findViewById(R.id.quizDescrip);
         startQuiz = view.findViewById(R.id.startQuizButton);
         flagImage = view.findViewById(R.id.quizStartImage);
-        flagImage.setBackgroundResource(R.drawable.flagearthanimation);
+        flagImage.setBackgroundResource(R.drawable.earthanimation);
         flagglobe = (AnimationDrawable) flagImage.getBackground();
 
         //set all the texts
         title.setText("Flag Quiz");
+        descrip.setText("Match these flags with the right countries!");
         startQuiz.setText("Start Quiz");
         //TODO add image to quiz fragments
         //add nice city image here
