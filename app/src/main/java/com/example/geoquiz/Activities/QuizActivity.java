@@ -22,6 +22,7 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
+import com.example.geoquiz.Database.AppDatabase;
 import com.example.geoquiz.Models.CitiesResponse;
 import com.example.geoquiz.Models.CountriesResponse;
 
@@ -47,12 +48,13 @@ public class QuizActivity extends AppCompatActivity {
     String correctAnswer;
     int difficulty;
     String quizType;
-    String countryQuery;
     String questionQuery;
     String flagQuiz;
     AnimationDrawable load;
     int questsDone = 0;
     int questsDoneRight = 0;
+    AppDatabase db;
+
 
 
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,8 +68,6 @@ public class QuizActivity extends AppCompatActivity {
         flagQuiz = getString(R.string.flag_quiz);
         //get difficulty
         difficulty = intent.getIntExtra("difficulty", 4);
-        countryQuery = "http://geodb-free-service.wirefreethought.com/v1/geo/countries?limit=" +
-                difficulty + "&offset=";
 
         //initialise all the fields
         answers.add((RadioButton) findViewById(R.id.radioButton));
@@ -93,6 +93,7 @@ public class QuizActivity extends AppCompatActivity {
         }
         options = findViewById(R.id.radiogroup);
         context = getApplicationContext();
+        db = AppDatabase.getInstance(context);
         button = findViewById(R.id.button);
         button.setOnClickListener(nextButton);
         button.setEnabled(false);
@@ -113,6 +114,21 @@ public class QuizActivity extends AppCompatActivity {
             }
         });
 
+        //show the tutorial if it's their first time
+        if (Utils.getScore(this).equals("0/0")){
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            // Add the buttons
+            builder.setPositiveButton("Begin", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int id) {
+                }
+            });
+            //add title
+            builder.setTitle("Tutorial");
+            //set message and show alert
+            builder.setMessage("Click the country you think matches the flag or city you are shown" +
+                    ". Have fun!").show();
+        }
+
         //set the first question
         refreshQuestions();
 
@@ -130,11 +146,9 @@ public class QuizActivity extends AppCompatActivity {
         // Obtain a number between [0 - 197], this will choose our country
         final int offset = random.nextInt(198);
         //mod the random number to choose the flag that will be displayed
-        final int selectedCountry = offset%difficulty;
+        final int selectedCountry = offset % difficulty;
         //add to the total number of questions they answered
         questsDone++;
-
-        final String url = countryQuery + offset;
 
         //set the imageView to the downloading image to let the user know the image is downloading
         flagImage.setImageResource(R.drawable.loadanimation);
@@ -142,92 +156,60 @@ public class QuizActivity extends AppCompatActivity {
         load.start();
 
         //Make request to get 4 countries
-        final RequestQueue requestQueue =  com.android.volley.toolbox.Volley.newRequestQueue(context);
-        Response.Listener<String> responseListener = new Response.Listener<String>() {
+        List<Country> countryData = db.countryDao().getCountriesRandom(difficulty);
+        correctAnswer = countryData.get(selectedCountry).getName();
+        //set the text of the radio buttons
+        for (int i = 0; i < answers.size(); i++) {
+            answers.get(i).setText(countryData.get(i).getName());
+        }
+        //get the id of a random country
+        String countryID = countryData.get(selectedCountry).getCode();
+        //append it to the url
+        String questionURL = questionQuery + countryID;
+        //if its a city, get a random city by setting a random offset
+        if (quizType.equals(getString(R.string.cities_quiz))) {
+            questionURL = questionURL + "&offset=" + offset;
+        }
+        final RequestQueue requestQueues = com.android.volley.toolbox.Volley.newRequestQueue(context);
+        Response.Listener<String> responseListenerFlag = new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 //turn them into an object that can be accessed using getters and setters
                 Gson gson = new Gson();
-                CountriesResponse countries = gson.fromJson(response, CountriesResponse.class);
-                List<Country> countryData = countries.getData();
-                //set the correct answer
-                try {
-                    correctAnswer = countryData.get(selectedCountry).getName();
-                    //set the text of the radio buttons
-                    for(int i = 0;i < answers.size();i++){
-                        answers.get(i).setText(countryData.get(i).getName());
+                //if its a flag quiz
+                if (quizType.equals(flagQuiz)) {
+                    FlagResponse flagData = gson.fromJson(response, FlagResponse.class);
+                    String imageURL = flagData.getData().getFlagImageUri();
+                    //set the image of the flag
+                    Utils.fetchSvg(context, imageURL, flagImage);
+                //if its a cities quiz
+                } else {
+                    CitiesResponse cityData = gson.fromJson(response, CitiesResponse.class);
+                    //if no cities are returned
+                    //refresh questions
+                    if (cityData.getMetadata().getTotalCount() == 0) {
+                        refreshQuestions();
+                        questsDone--;
+                    } else {
+                        question.setText("Which country is this city in: " + cityData.getData().get(0).getName());
                     }
-    //this is just in case some weird error that shouldnt be happening that I can't reproduce happens
-    //it might be a problem with the api being a little inconsistent in its behaviour
-                    //i just refresh the questions and it works fine
-                }catch (Exception e){
-                    Log.e("countryData", url,e);
-                    refreshQuestions();
-                    questsDone--;
                 }
-
-                //get the flag of a random country
-                String countryID = countryData.get(selectedCountry).getCode();
-                String questionURL = questionQuery + countryID;
-                if (quizType.equals(getString(R.string.cities_quiz))) {
-                    questionURL = questionURL + "&offset="+ offset;
-                }
-                final RequestQueue requestQueues =  com.android.volley.toolbox.Volley.newRequestQueue(context);
-                final String finalQuestionURL = questionURL;
-                Response.Listener<String> responseListenerFlag = new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        //turn them into an object that can be accessed using getters and setters
-                        Gson gson = new Gson();
-                        if (quizType.equals(flagQuiz)) {
-                            FlagResponse flagData = gson.fromJson(response, FlagResponse.class);
-                            String imageURL = flagData.getData().getFlagImageUri();
-                            //set the image of the flag
-                            Utils.fetchSvg(context, imageURL, flagImage);
-                        } else {
-                            CitiesResponse cityData = gson.fromJson(response, CitiesResponse.class);
-                            //if no cities are returned
-                            //refresh questions
-                            if (cityData.getMetadata().getTotalCount() == 0){
-                                refreshQuestions();
-                                questsDone--;
-                            }else {
-                                question.setText("Which country is this city in: " + cityData.getData().get(0).getName());
-                            }
-                        }
-                        requestQueues.stop();
-                    }
-                };
-
-                Response.ErrorListener errorListenerFlag = new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        requestQueues.stop();
-                    }
-                };
-                StringRequest stringRequests = new StringRequest(Request.Method.GET, questionURL, responseListenerFlag,
-                        errorListenerFlag);
-                requestQueues.add(stringRequests);
-
-                requestQueue.stop();
+                requestQueues.stop();
             }
         };
 
-        Response.ErrorListener errorListener = new Response.ErrorListener() {
+        Response.ErrorListener errorListenerFlag = new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                requestQueue.stop();
+                Log.e("volley error", error.toString());
+                requestQueues.stop();
             }
         };
-
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, url, responseListener,
-                errorListener);
-        requestQueue.add(stringRequest);
-
-
-
-
+        StringRequest stringRequests = new StringRequest(Request.Method.GET, questionURL, responseListenerFlag,
+                errorListenerFlag);
+        requestQueues.add(stringRequests);
     }
+
 
     private void checkAnswer(){
         //check if they're clicking to go to the next question or check their answer
@@ -268,7 +250,6 @@ public class QuizActivity extends AppCompatActivity {
             button.setEnabled(false);
             //reset the radio buttons
             for(RadioButton radio :  answers){
-                radio.setText("Loading");
                 radio.setBackground(getDrawable(R.drawable.unshaded_background));
                 radio.setTextColor(Color.parseColor("#000058"));
             }

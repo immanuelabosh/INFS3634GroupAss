@@ -22,4 +22,8 @@ public interface CountryDao {
 
     @Query("SELECT COUNT(*) FROM Country")
     int getSize();
+
+    //get random countries
+    @Query("Select * FROM Country ORDER BY RANDOM() LIMIT :limit;")
+    List<Country> getCountriesRandom(int limit);
 }
