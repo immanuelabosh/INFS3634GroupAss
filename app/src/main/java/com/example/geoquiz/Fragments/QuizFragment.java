@@ -19,6 +19,7 @@ public class QuizFragment extends Fragment {
 
     ImageView image;
     TextView title;
+    TextView descrip;
     Button easyQuiz;
     Button medQuiz;
     Button hardQuiz;
@@ -37,6 +38,7 @@ public class QuizFragment extends Fragment {
         //init all the fields
         image = view.findViewById(R.id.quizStartImage);
         title = view.findViewById(R.id.quizTitle);
+        descrip = view.findViewById(R.id.quizDescrip);
         easyQuiz = view.findViewById(R.id.easyQuizButton);
         medQuiz = view.findViewById(R.id.mediumQuizButton);
         hardQuiz = view.findViewById(R.id.hardQuizButton);
@@ -46,8 +48,10 @@ public class QuizFragment extends Fragment {
 
         //set the animations depending on quiz
         if (quizType == getString(R.string.flag_quiz)){
+            descrip.setText("Match these flags with the right countries!");
             quizImage.setImageResource(R.drawable.flagearthanimation);
         }else {
+            descrip.setText("Match these cities with the right countries!");
             quizImage.setImageResource(R.drawable.earthanimation);
         }
         easyQuiz.setText("Easy");

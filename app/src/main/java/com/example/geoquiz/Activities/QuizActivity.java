@@ -134,7 +134,7 @@ public class QuizActivity extends AppCompatActivity {
         //add to the total number of questions they answered
         questsDone++;
 
-        String url = countryQuery + offset;
+        final String url = countryQuery + offset;
 
         //set the imageView to the downloading image to let the user know the image is downloading
         flagImage.setImageResource(R.drawable.loadanimation);
@@ -161,7 +161,7 @@ public class QuizActivity extends AppCompatActivity {
     //it might be a problem with the api being a little inconsistent in its behaviour
                     //i just refresh the questions and it works fine
                 }catch (Exception e){
-                    Log.e("countryData", countryData.get(1).getName(),e);
+                    Log.e("countryData", url,e);
                     refreshQuestions();
                     questsDone--;
                 }

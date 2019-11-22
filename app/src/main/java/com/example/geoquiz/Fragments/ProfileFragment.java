@@ -7,6 +7,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
@@ -31,6 +32,7 @@ public class ProfileFragment extends Fragment implements EditTextFragment.EditTe
     private TextView username;
     private RecyclerView leaderboard;
     private String userID;
+    private ImageView editButton;
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
@@ -57,6 +59,13 @@ public class ProfileFragment extends Fragment implements EditTextFragment.EditTe
         if (userID.equals("User")){
             showEditDialog();
         }
+        editButton = view.findViewById(R.id.editButton);
+        editButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showEditDialog();
+            }
+        });
 
         username.setText("Hi " + userID + ", Welcome back!");
         score.setText("You've answered " + userScore + " questions correctly!");
@@ -78,8 +87,7 @@ public class ProfileFragment extends Fragment implements EditTextFragment.EditTe
     public void onFinishEditDialog(String inputText) {
         //if they entered nothing
         if (inputText.equals("")){
-            //show the dialog again
-            showEditDialog();
+            //dont change the default name
         //otherwise set their username
         }else {
             Utils.setUsername(inputText, getContext());
