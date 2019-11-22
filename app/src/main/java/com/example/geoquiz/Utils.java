@@ -19,6 +19,7 @@ import okhttp3.Response;
 
 public class Utils {
     private static OkHttpClient httpClient;
+    private static String score = "score";
 
     public static void fetchSvg(Context context, String url, final ImageView target) {
         if (httpClient == null) {
@@ -56,5 +57,19 @@ public class Utils {
         SharedPreferences sharedPreferences = context.getSharedPreferences(key, Context.MODE_PRIVATE);;
         return sharedPreferences.getString(key, "");
     }
+
+    public static void addToScore(int questsRight, int questsCompleted, Context context) {
+        SharedPreferences sharedPreferences = context.getSharedPreferences(score, Context.MODE_PRIVATE);;
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString("score", questsRight + "/" + questsCompleted);
+        editor.apply();
+    }
+    public static String getScore(int questsCompleted, int questsRight, Context context) {
+        SharedPreferences sharedPreferences = context.getSharedPreferences(score, Context.MODE_PRIVATE);;
+        return sharedPreferences.getString(score, "0/0");
+    }
+
+
+
 
 }

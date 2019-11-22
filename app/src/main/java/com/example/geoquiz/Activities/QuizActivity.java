@@ -1,6 +1,7 @@
 package com.example.geoquiz.Activities;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -12,6 +13,7 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.android.volley.Request;
@@ -47,6 +49,8 @@ public class QuizActivity extends AppCompatActivity {
     String countryQuery;
     String questionQuery;
     String flagQuiz;
+    int questsDone = 0;
+    int questsDoneRight = 0;
 
 
     protected void onCreate(Bundle savedInstanceState) {
@@ -125,6 +129,8 @@ public class QuizActivity extends AppCompatActivity {
         final int offset = random.nextInt(198);
         //mod the random number to choose the flag that will be displayed
         final int selectedCountry = offset%difficulty;
+        //add to the total number of questions they answered
+        questsDone++;
 
         String url = countryQuery + offset;
 
@@ -141,10 +147,17 @@ public class QuizActivity extends AppCompatActivity {
                 CountriesResponse countries = gson.fromJson(response, CountriesResponse.class);
                 List<Country> countryData = countries.getData();
                 //set the correct answer
-                correctAnswer = countryData.get(selectedCountry).getName();
-                //set the text of the radio buttons
-                for(int i = 0;i < answers.size();i++){
-                    answers.get(i).setText(countryData.get(i).getName());
+                try {
+                    correctAnswer = countryData.get(selectedCountry).getName();
+                    //set the text of the radio buttons
+                    for(int i = 0;i < answers.size();i++){
+                        answers.get(i).setText(countryData.get(i).getName());
+                    }
+    //this is just in case some weird error that shouldnt be happening that I can't reproduce happens
+    //it might be a problem with the api being a little inconsistent in its behaviour
+                }catch (Exception e){
+                    refreshQuestions();
+                    questsDone--;
                 }
 
                 //get the flag of a random country
@@ -218,6 +231,8 @@ public class QuizActivity extends AppCompatActivity {
             if (selectedAnswer.getText() == correctAnswer) {
                 //if they did congratulate them
                 selectedAnswer.setText("Good job");
+                //add to their score
+                questsDoneRight++;
             //if they didnt chatise user
             } else {
                 selectedAnswer.setText("Bad job");
@@ -244,5 +259,25 @@ public class QuizActivity extends AppCompatActivity {
                 radio.setTextColor(Color.parseColor("#000058"));
             }
         }
+    }
+
+    public void onBackPressed() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        // Add the buttons
+        builder.setPositiveButton("Return home", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                //update score
+                Utils.addToScore(questsDoneRight, questsDone, context);
+                // User clicked OK button
+                pressBack();
+            }
+        });
+        //set message and show alert
+        builder.setMessage("Congratulations! You answered " + questsDoneRight + "/" + questsDone +
+                " questions correctly!").show();
+    }
+
+    public void pressBack() {
+        super.onBackPressed();
     }
 }
