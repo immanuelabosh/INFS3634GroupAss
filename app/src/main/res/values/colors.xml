@@ -10,6 +10,8 @@
     <color name ="colorPastelBlue">#ccccff</color>
     <color name ="colorPastelGreen">#b1ffb1</color>
     <color name ="colorBackground">#50CEC2</color>
+    <color name ="BottomNavBarColor">#0B0F0E</color>
+    <color name ="InactiveBottomNavIconColor">#969998</color>
 
 </resources>
 
