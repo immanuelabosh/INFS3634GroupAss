@@ -37,7 +37,8 @@ public class MainActivity extends AppCompatActivity {
 
 
         // I want there to be a Fragment in the slot from the start
-        swapFragment(launchQuiz(getString(R.string.flag_quiz)));
+        setTitle("Profile");
+        swapFragment(new ProfileFragment());
 
         //setting up the bottom nav view
         bottomNavigationView = findViewById(R.id.nav_view);

@@ -35,7 +35,7 @@ public class InsertCountriesAsyncTask extends AsyncTask<Void, Void, Void> {
     @Override
     protected Void doInBackground(Void... voids) {
         //if countries are downloaded, do nothing
-        if (Utils.getPrefs(downloadKey, context).equalsIgnoreCase("true")){
+        if (Utils.getPrefs(downloadKey, "false" ,context).equalsIgnoreCase("true")){
             //if countries arent downloaded, download them
         }else {
             this.db = AppDatabase.getInstance(context);

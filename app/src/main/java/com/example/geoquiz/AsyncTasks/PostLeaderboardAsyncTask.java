@@ -34,7 +34,7 @@ public class PostLeaderboardAsyncTask extends AsyncTask<Void, Void, Void> {
 
         final String leaderboardKey = "GeoQuizAssINFS3634";
 
-        final String json = Utils.getPrefs("leaderboard", context);
+        final String json = Utils.getPrefs("leaderboard", "", context);
 
         RequestQueue queue = Volley.newRequestQueue(context);
 

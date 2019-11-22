@@ -11,7 +11,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
         android:gravity="center"
-        android:text="Enter the username you want here" />
+        android:text="Please enter your name here" />
 
     <EditText
         android:id="@+id/txt_your_name"

@@ -45,7 +45,7 @@ public class Utils {
         });
     }
 
-//I was gonna use shared preferences to hold a username and the leaderboard
+//shared prefs hold the username and score
     public static void editPrefs(String key, String value, Context context) {
         SharedPreferences sharedPreferences = context.getSharedPreferences(key, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
@@ -53,25 +53,30 @@ public class Utils {
         editor.apply();
     }
 
-    public static String getPrefs(String key, Context context) {
+    public static String getPrefs(String key, String defaultValue, Context context) {
         SharedPreferences sharedPreferences = context.getSharedPreferences(key, Context.MODE_PRIVATE);;
-        return sharedPreferences.getString(key, "");
+        return sharedPreferences.getString(key, defaultValue);
     }
 
     public static void addToScore(int questsRight, int questsCompleted, Context context) {
-        SharedPreferences sharedPreferences = context.getSharedPreferences(score, Context.MODE_PRIVATE);
         String currectScore = getScore(context);
         String[] scores = currectScore.split("/");
         questsRight += Integer.parseInt(scores[0]);
         questsCompleted += Integer.parseInt(scores[1]);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putString("score", questsRight + "/" + questsCompleted);
-        editor.apply();
+        editPrefs("score", questsRight + "/" + questsCompleted, context);
     }
     public static String getScore(Context context) {
-        SharedPreferences sharedPreferences = context.getSharedPreferences(score, Context.MODE_PRIVATE);
-        return sharedPreferences.getString(score, "0/0");
+        return getPrefs(score, "0/0", context);
     }
+
+    public static void setUsername (String username, Context context) {
+        editPrefs("username", username,context);
+    }
+    public static String getUsername(Context context) {
+        return getPrefs("username", "User", context);
+    }
+
+
 
 
 
