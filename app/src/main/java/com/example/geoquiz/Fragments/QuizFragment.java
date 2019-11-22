@@ -46,16 +46,16 @@ public class QuizFragment extends Fragment {
 
         //set the animations depending on quiz
         if (quizType == getString(R.string.flag_quiz)){
-            quizImage.setBackgroundResource(R.drawable.flagearthanimation);
+            quizImage.setImageResource(R.drawable.flagearthanimation);
         }else {
-            quizImage.setBackgroundResource(R.drawable.earthanimation);
+            quizImage.setImageResource(R.drawable.earthanimation);
         }
         easyQuiz.setText("Easy");
         medQuiz.setText("Medium");
         hardQuiz.setText("Hard");
 
         title.setText(quizType);
-        globe = (AnimationDrawable) quizImage.getBackground();
+        globe = (AnimationDrawable) quizImage.getDrawable();
         globe.start();
 
 

@@ -1,5 +1,5 @@
 <resources>
     <string name="app_name">GeoQuiz</string>
     <string name="flag_quiz">Flag Quiz</string>
-    <string name="cities_quiz">Citiez Quiz</string>
+    <string name="cities_quiz">Cities Quiz</string>
 </resources>

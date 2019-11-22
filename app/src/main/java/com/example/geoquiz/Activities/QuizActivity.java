@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -49,6 +50,7 @@ public class QuizActivity extends AppCompatActivity {
     String countryQuery;
     String questionQuery;
     String flagQuiz;
+    AnimationDrawable load;
     int questsDone = 0;
     int questsDoneRight = 0;
 
@@ -135,7 +137,9 @@ public class QuizActivity extends AppCompatActivity {
         String url = countryQuery + offset;
 
         //set the imageView to the downloading image to let the user know the image is downloading
-        flagImage.setImageResource(R.drawable.ic_cloud_download_black_24dp);
+        flagImage.setImageResource(R.drawable.loadanimation);
+        load = (AnimationDrawable) flagImage.getDrawable();
+        load.start();
 
         //Make request to get 4 countries
         final RequestQueue requestQueue =  com.android.volley.toolbox.Volley.newRequestQueue(context);
