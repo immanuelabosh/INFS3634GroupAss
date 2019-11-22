@@ -159,7 +159,9 @@ public class QuizActivity extends AppCompatActivity {
                     }
     //this is just in case some weird error that shouldnt be happening that I can't reproduce happens
     //it might be a problem with the api being a little inconsistent in its behaviour
+                    //i just refresh the questions and it works fine
                 }catch (Exception e){
+                    Log.e("countryData", countryData.get(1).getName(),e);
                     refreshQuestions();
                     questsDone--;
                 }
@@ -168,22 +170,30 @@ public class QuizActivity extends AppCompatActivity {
                 String countryID = countryData.get(selectedCountry).getCode();
                 String questionURL = questionQuery + countryID;
                 if (quizType.equals(getString(R.string.cities_quiz))) {
-                    questionURL += "&offset="+ offset;
+                    questionURL = questionURL + "&offset="+ offset;
                 }
                 final RequestQueue requestQueues =  com.android.volley.toolbox.Volley.newRequestQueue(context);
+                final String finalQuestionURL = questionURL;
                 Response.Listener<String> responseListenerFlag = new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
                         //turn them into an object that can be accessed using getters and setters
                         Gson gson = new Gson();
-                        if (quizType.equals(flagQuiz)){
+                        if (quizType.equals(flagQuiz)) {
                             FlagResponse flagData = gson.fromJson(response, FlagResponse.class);
                             String imageURL = flagData.getData().getFlagImageUri();
                             //set the image of the flag
                             Utils.fetchSvg(context, imageURL, flagImage);
-                        }else {
+                        } else {
                             CitiesResponse cityData = gson.fromJson(response, CitiesResponse.class);
-                            question.setText("Which country is this city in: " + cityData.getData().get(0).getName());
+                            //if no cities are returned
+                            //refresh questions
+                            if (cityData.getMetadata().getTotalCount() == 0){
+                                refreshQuestions();
+                                questsDone--;
+                            }else {
+                                question.setText("Which country is this city in: " + cityData.getData().get(0).getName());
+                            }
                         }
                         requestQueues.stop();
                     }
