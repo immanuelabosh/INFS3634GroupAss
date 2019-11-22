@@ -12,9 +12,8 @@ import android.widget.TextView;
 
 import com.example.geoquiz.AsyncTasks.InsertCountriesAsyncTask;
 import com.example.geoquiz.Database.AppDatabase;
-import com.example.geoquiz.Fragments.CityQuizFragment;
-import com.example.geoquiz.Fragments.FlagQuizFragment;
 import com.example.geoquiz.Fragments.LearningFragment;
+import com.example.geoquiz.Fragments.QuizFragment;
 import com.example.geoquiz.R;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -37,7 +36,7 @@ public class MainActivity extends AppCompatActivity {
 
 
         // I want there to be a Fragment in the slot from the start
-        swapFragment(new FlagQuizFragment());
+        swapFragment(launchQuiz(getString(R.string.flag_quiz)));
 
         //setting up the bottom nav view
         bottomNavigationView = findViewById(R.id.nav_view);
@@ -49,8 +48,7 @@ public class MainActivity extends AppCompatActivity {
                 // The menu is chunked out as bottom_nav_menu.xml in the res > menu folder
                 if (menuItem.getItemId() == R.id.nav_flag_quiz) {
                     //Todo transistions for fragments
-                    Fragment fragment = new FlagQuizFragment();
-                    swapFragment(fragment);
+                    swapFragment(launchQuiz(getString(R.string.flag_quiz)));
                     setTitle("Flags Quiz");
                     return true;
                 } else if (menuItem.getItemId() == R.id.nav_learning) {
@@ -59,9 +57,7 @@ public class MainActivity extends AppCompatActivity {
                     swapFragment(fragment);
                     return true;
                 } else if (menuItem.getItemId() == R.id.nav_city_quiz) {
-                    Fragment fragment = new CityQuizFragment();
-                    setTitle("Cities Quiz");
-                    swapFragment(fragment);
+                    swapFragment(launchQuiz(getString(R.string.cities_quiz)));
                     return true;
                 }
                 return false;
@@ -81,6 +77,17 @@ public class MainActivity extends AppCompatActivity {
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.fragment_slot, fragment);
         fragmentTransaction.commit();
+    }
+
+    private Fragment launchQuiz(String quizType) {
+        Fragment quizFragment = new QuizFragment();
+        Bundle bundle = new Bundle();
+        bundle.putString("quizType", quizType);
+        // set Fragment Arguments
+        quizFragment.setArguments(bundle);
+        swapFragment(quizFragment);
+        setTitle(quizType);
+        return quizFragment;
     }
 
 

@@ -1,8 +1,10 @@
 package com.example.geoquiz.Activities;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -19,37 +21,70 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.example.geoquiz.Models.CitiesResponse;
 import com.example.geoquiz.Models.CountriesResponse;
+
+
 import com.example.geoquiz.Models.Country;
+import com.example.geoquiz.Models.FlagResponse;
 import com.example.geoquiz.R;
+import com.example.geoquiz.Utils;
 import com.google.gson.Gson;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public class CitiesQuizActivity extends AppCompatActivity {
+public class QuizActivity extends AppCompatActivity {
     ImageView flagImage;
     TextView question;
     RadioGroup options;
-    RadioButton[] answers = new RadioButton[4];
+    List<RadioButton> answers = new ArrayList<>();
     Button button;
     Random random = new Random();
     Context context;
     String correctAnswer;
-
+    int difficulty;
+    String quizType;
+    String countryQuery;
+    String questionQuery;
+    String flagQuiz;
 
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_flags_quiz);
 
+        //get intent
+        Intent intent = getIntent();
+        //get quiz type (flags or cities)
+        quizType = intent.getStringExtra("quizType");
+        flagQuiz = getString(R.string.flag_quiz);
+        //get difficulty
+        difficulty = intent.getIntExtra("difficulty", 4);
+        countryQuery = "http://geodb-free-service.wirefreethought.com/v1/geo/countries?limit=" +
+                difficulty + "&offset=";
+
         //initialise all the fields
-        answers[0] = findViewById(R.id.radioButton);
-        answers[1] = findViewById(R.id.radioButton2);
-        answers[2] = findViewById(R.id.radioButton3);
-        answers[3] = findViewById(R.id.radioButton4);
-        flagImage = findViewById(R.id.imageView);
-        flagImage.setVisibility(View.GONE);
+        answers.add((RadioButton) findViewById(R.id.radioButton));
+        answers.add((RadioButton) findViewById(R.id.radioButton2));
+        findViewById(R.id.radioButton3).setVisibility(View.GONE);
+        findViewById(R.id.radioButton4).setVisibility(View.GONE);
+        if (difficulty >= 3){
+            findViewById(R.id.radioButton3).setVisibility(View.VISIBLE);
+            answers.add((RadioButton) findViewById(R.id.radioButton3));
+        }
+        if (difficulty == 4){
+            findViewById(R.id.radioButton4).setVisibility(View.VISIBLE);
+            answers.add((RadioButton) findViewById(R.id.radioButton4));
+        }
         question = findViewById(R.id.quizQuestion);
+        flagImage = findViewById(R.id.imageView);
+        if (quizType.equals(flagQuiz)){
+            question.setVisibility(View.GONE);
+            questionQuery = "http://geodb-free-service.wirefreethought.com/v1/geo/countries/";
+        }else {
+            flagImage.setVisibility(View.GONE);
+            questionQuery = "http://geodb-free-service.wirefreethought.com/v1/geo/cities?countryIds=";
+        }
         options = findViewById(R.id.radiogroup);
         context = getApplicationContext();
         button = findViewById(R.id.button);
@@ -59,29 +94,12 @@ public class CitiesQuizActivity extends AppCompatActivity {
         options.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
-                if(answers[0].isChecked()){
-                    answers[0].setBackground(getDrawable(R.drawable.shaded_background));
-                    answers[1].setBackground(getDrawable(R.drawable.unshaded_background));
-                    answers[2].setBackground(getDrawable(R.drawable.unshaded_background));
-                    answers[3].setBackground(getDrawable(R.drawable.unshaded_background));
-                }
-                if(answers[1].isChecked()){
-                    answers[0].setBackground(getDrawable(R.drawable.unshaded_background));
-                    answers[1].setBackground(getDrawable(R.drawable.shaded_background));
-                    answers[2].setBackground(getDrawable(R.drawable.unshaded_background));
-                    answers[3].setBackground(getDrawable(R.drawable.unshaded_background));
-                }
-                if(answers[2].isChecked()) {
-                    answers[0].setBackground(getDrawable(R.drawable.unshaded_background));
-                    answers[1].setBackground(getDrawable(R.drawable.unshaded_background));
-                    answers[2].setBackground(getDrawable(R.drawable.shaded_background));
-                    answers[3].setBackground(getDrawable(R.drawable.unshaded_background));
-                }
-                if(answers[3].isChecked()) {
-                    answers[0].setBackground(getDrawable(R.drawable.unshaded_background));
-                    answers[1].setBackground(getDrawable(R.drawable.unshaded_background));
-                    answers[2].setBackground(getDrawable(R.drawable.unshaded_background));
-                    answers[3].setBackground(getDrawable(R.drawable.shaded_background));
+                for(RadioButton radio :  answers){
+                    if (radio.isChecked()){
+                        radio.setBackground(getDrawable(R.drawable.shaded_background));
+                    }else {
+                        radio.setBackground(getDrawable(R.drawable.unshaded_background));
+                    }
                 }
                 if (button.isEnabled() == false){
                     button.setEnabled(true);
@@ -106,16 +124,13 @@ public class CitiesQuizActivity extends AppCompatActivity {
         // Obtain a number between [0 - 197], this will choose our country
         final int offset = random.nextInt(198);
         //mod the random number to choose the flag that will be displayed
-        final int country = offset%4;
+        final int selectedCountry = offset%difficulty;
 
-        //let the user know the question is loading
-        question.setText("Loading Question...");
+        String url = countryQuery + offset;
 
+        //set the imageView to the downloading image to let the user know the image is downloading
+        flagImage.setImageResource(R.drawable.ic_cloud_download_black_24dp);
 
-        String url = "http://geodb-free-service.wirefreethought.com/" +
-                "v1/geo/countries?limit=4&offset="+ offset;
-
-        final CountriesResponse[] countries = new CountriesResponse[1];
         //Make request to get 4 countries
         final RequestQueue requestQueue =  com.android.volley.toolbox.Volley.newRequestQueue(context);
         Response.Listener<String> responseListener = new Response.Listener<String>() {
@@ -123,27 +138,36 @@ public class CitiesQuizActivity extends AppCompatActivity {
             public void onResponse(String response) {
                 //turn them into an object that can be accessed using getters and setters
                 Gson gson = new Gson();
-                countries[0] = gson.fromJson(response, CountriesResponse.class);
-                List<Country> countryData = countries[0].getData();
+                CountriesResponse countries = gson.fromJson(response, CountriesResponse.class);
+                List<Country> countryData = countries.getData();
                 //set the correct answer
-                correctAnswer = countryData.get(country).getName();
+                correctAnswer = countryData.get(selectedCountry).getName();
                 //set the text of the radio buttons
-                for(int i = 0;i < answers.length;i++){
-                    answers[i].setText(countryData.get(i).getName());
+                for(int i = 0;i < answers.size();i++){
+                    answers.get(i).setText(countryData.get(i).getName());
                 }
 
                 //get the flag of a random country
-                String countryID = countryData.get(country).getCode();
-                final String cityURL = "http://geodb-free-service.wirefreethought.com/" +
-                        "v1/geo/cities?countryIds=" + countryID + "&offset="+offset;
+                String countryID = countryData.get(selectedCountry).getCode();
+                String questionURL = questionQuery + countryID;
+                if (quizType.equals(getString(R.string.cities_quiz))) {
+                    questionURL += "&offset="+ offset;
+                }
                 final RequestQueue requestQueues =  com.android.volley.toolbox.Volley.newRequestQueue(context);
                 Response.Listener<String> responseListenerFlag = new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
                         //turn them into an object that can be accessed using getters and setters
                         Gson gson = new Gson();
-                        CitiesResponse cityData = gson.fromJson(response, CitiesResponse.class);
-                        question.setText("Which country is this city in: " + cityData.getData().get(0).getName());
+                        if (quizType.equals(flagQuiz)){
+                            FlagResponse flagData = gson.fromJson(response, FlagResponse.class);
+                            String imageURL = flagData.getData().getFlagImageUri();
+                            //set the image of the flag
+                            Utils.fetchSvg(context, imageURL, flagImage);
+                        }else {
+                            CitiesResponse cityData = gson.fromJson(response, CitiesResponse.class);
+                            question.setText("Which country is this city in: " + cityData.getData().get(0).getName());
+                        }
                         requestQueues.stop();
                     }
                 };
@@ -154,7 +178,7 @@ public class CitiesQuizActivity extends AppCompatActivity {
                         requestQueues.stop();
                     }
                 };
-                StringRequest stringRequests = new StringRequest(Request.Method.GET, cityURL, responseListenerFlag,
+                StringRequest stringRequests = new StringRequest(Request.Method.GET, questionURL, responseListenerFlag,
                         errorListenerFlag);
                 requestQueues.add(stringRequests);
 
@@ -180,20 +204,24 @@ public class CitiesQuizActivity extends AppCompatActivity {
 
     private void checkAnswer(){
         //check if they're clicking to go to the next question or check their answer
-        if (button.getText().equals("Check Answer")){
+        if (button.getText().equals("Check Answer")) {
             //find the radio button that was checked
             RadioButton selectedAnswer = findViewById(options.getCheckedRadioButtonId());
-            //check if its the right answer
-            //TODO Add a proper congratulations/chatisement for the user
-            if (selectedAnswer.getText() == correctAnswer){
-                //display correct answer popup
+            //display correct answer
+            for (RadioButton radio : answers) {
+                if (radio.getText() == correctAnswer) {
+                    radio.setTextColor(Color.parseColor("#00c400"));
+                    radio.setBackground(getDrawable(R.drawable.shaded_background));
+                }
+            }
+            //check if the user got it right
+            if (selectedAnswer.getText() == correctAnswer) {
+                //if they did congratulate them
                 selectedAnswer.setText("Good job");
-                selectedAnswer.setTextColor(Color.parseColor("#00c400"));
-            }else {
-                //display correct answer
+            //if they didnt chatise user
+            } else {
                 selectedAnswer.setText("Bad job");
                 selectedAnswer.setTextColor(Color.parseColor("#ff6666"));
-
             }
             //change the text of the next button
             button.setText("Next");
@@ -209,11 +237,12 @@ public class CitiesQuizActivity extends AppCompatActivity {
             options.clearCheck();
             //disable the button until a radio button is selected
             button.setEnabled(false);
-            answers[0].setBackground(getDrawable(R.drawable.unshaded_background));
-            answers[1].setBackground(getDrawable(R.drawable.unshaded_background));
-            answers[2].setBackground(getDrawable(R.drawable.unshaded_background));
-            answers[3].setBackground(getDrawable(R.drawable.unshaded_background));
-            selectedAnswer.setTextColor(Color.parseColor("#000058"));
+            //reset the radio buttons
+            for(RadioButton radio :  answers){
+                radio.setText("Loading");
+                radio.setBackground(getDrawable(R.drawable.unshaded_background));
+                radio.setTextColor(Color.parseColor("#000058"));
+            }
         }
     }
 }
