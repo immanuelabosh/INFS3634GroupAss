@@ -49,10 +49,10 @@ public class QuizFragment extends Fragment {
         //set the animations depending on quiz
         if (quizType == getString(R.string.flag_quiz)){
             descrip.setText("Match these flags with the right countries!");
-            quizImage.setImageResource(R.drawable.flagearthanimation);
+            quizImage.setImageResource(R.drawable.earthanimation);
         }else {
             descrip.setText("Match these cities with the right countries!");
-            quizImage.setImageResource(R.drawable.earthanimation);
+            quizImage.setImageResource(R.drawable.citiesanimation);
         }
         easyQuiz.setText("Easy");
         medQuiz.setText("Medium");
